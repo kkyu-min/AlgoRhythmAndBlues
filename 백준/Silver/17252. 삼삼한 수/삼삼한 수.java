@@ -5,25 +5,26 @@ import java.util.HashSet;
 
 public class Main {
 
-    static long[] arr = new long[40]; 
-    static long num;
-    static HashSet<Long> set = new HashSet<>();
+    static int[] arr = new int[20];
+    static int num;
+    static HashSet<Integer> set = new HashSet<>();
 
-    static void make(int i, long sum) {
-        if (i == 40 || sum > Integer.MAX_VALUE || sum < 0) return;
-
+    static void make(int i, int sum) {
         set.add(sum);
+        if (i == 20 || sum < 0) return;
+
         make(i + 1, sum + arr[i]);
         make(i + 1, sum);
     }
 
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        num = Long.parseLong(br.readLine());
+        num = Integer.parseInt(br.readLine());
 
         arr[0] = 1;
-        for (int i = 1; i < 40; i++) {
+        for (int i = 1; i < 20; i++) {
             arr[i] = arr[i - 1] * 3;
         }
 
