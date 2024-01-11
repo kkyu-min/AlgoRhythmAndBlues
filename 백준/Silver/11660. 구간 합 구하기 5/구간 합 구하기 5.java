@@ -1,37 +1,40 @@
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
-		String[] tmp = br.readLine().split(" ");
-		int n = Integer.parseInt(tmp[0]); // 표의 크기
-		int m = Integer.parseInt(tmp[1]); // 합을  구해야 하는 횟수
-		StringBuilder sb = new StringBuilder();
-		
-		int[][] arr = new int[n+1][n+1]; // 구간합을 담을 배열
-		for(int i=1;i<=n;i++) {
-			tmp = br.readLine().split(" ");
-			for(int j=1;j<=n;j++) {
-				arr[i][j]= Integer.parseInt(tmp[j-1])+arr[i][j-1]; // 행별로 구간합을 가지도록 배열 완성
-			}
-		}
-		for(int i=0;i<m;i++) {
-			tmp = br.readLine().split(" ");
-			int startx = Integer.parseInt(tmp[0]);
-			int starty = Integer.parseInt(tmp[1]);
-			int endx = Integer.parseInt(tmp[2]);
-			int endy = Integer.parseInt(tmp[3]);
-			
-			int sum =0;
-			for(int j=0;j<=endx-startx;j++) {
-				sum += arr[startx+j][endy]-arr[startx+j][starty-1];
-			}
-			sb.append(sum).append('\n');
-		}
-		System.out.println(sb);
-	}
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
 
+        String[] tmp = br.readLine().split(" ");
+        int n = Integer.parseInt(tmp[0]);
+        int m = Integer.parseInt(tmp[1]);
+
+        int[][] arr = new int[n+1][n+1];
+
+        for(int i=0;i<n;i++) {
+            tmp = br.readLine().split(" ");
+            for(int j=0;j<n;j++){
+                arr[i+1][j+1] = Integer.parseInt(tmp[j]);
+            }
+        }
+        // 누적합 구하기
+        for(int i=1;i<=n;i++) {
+            for(int j=1;j<=n;j++) {
+                arr[i][j] += arr[i-1][j] + arr[i][j-1] -arr[i-1][j-1];
+            }
+        }
+
+        for(int i=0;i<m;i++) {
+            tmp = br.readLine().split(" ");
+            int x1 = Integer.parseInt(tmp[0]);
+            int y1 = Integer.parseInt(tmp[1]);
+            int x2 = Integer.parseInt(tmp[2]);
+            int y2 = Integer.parseInt(tmp[3]);
+            sb.append(arr[x2][y2] - arr[x1-1][y2] - arr[x2][y1-1] + arr[x1-1][y1-1]).append("\n");
+        }
+        System.out.println(sb);
+    }
 }
