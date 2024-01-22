@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
 public class Main {
 
@@ -13,22 +12,40 @@ public class Main {
         int n = Integer.parseInt(tmp[0]);
         int m = Integer.parseInt(tmp[1]);
 
-        int[] arr = new int[n+m];
+        int[] arr1 = new int[n];
+        int[] arr2 = new int[m];
 
         tmp = br.readLine().split(" ");
         for(int i=0;i<n;i++) {
-            arr[i] = Integer.parseInt(tmp[i]);
+            arr1[i] = Integer.parseInt(tmp[i]);
         }
 
         tmp = br.readLine().split(" ");
         for(int i=0;i<m;i++) {
-            arr[n+i] = Integer.parseInt(tmp[i]);
+            arr2[i] = Integer.parseInt(tmp[i]);
         }
 
-        Arrays.sort(arr);
-
-        for (int i : arr) {
-            sb.append(i).append(" ");
+        int index1 = 0;
+        int index2 = 0;
+        while(index1<n || index2<m) {
+            if(index1 >= n) {
+                sb.append(arr2[index2]).append(" ");
+                index2++;
+            }
+            else if(index2 >= m) {
+                sb.append(arr1[index1]).append(" ");
+                index1++;
+            }
+            else {
+                if(arr1[index1] <= arr2[index2]) {
+                    sb.append(arr1[index1]).append(" ");
+                    index1++;
+                }
+                else{
+                    sb.append(arr2[index2]).append(" ");
+                    index2++;
+                }
+            }
         }
         System.out.println(sb);
     }
