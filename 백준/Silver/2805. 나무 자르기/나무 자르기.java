@@ -3,46 +3,49 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
+
+    static long[] arr;
     static int n;
     static long m;
-    static long[] trees;
-    static long max = 0;
-    static long answer;
+    static long check(long height) {
+        long sum = 0;
+        for(int i=0;i<n;i++) {
+            if((arr[i] - height)>0) {
+                sum+=arr[i]-height;
+            }
+        }
+
+        return sum;
+    }
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         String[] tmp = br.readLine().split(" ");
-
         n = Integer.parseInt(tmp[0]);
         m = Long.parseLong(tmp[1]);
-        trees = new long[n];
 
         tmp = br.readLine().split(" ");
+        arr = new long[n];
 
-        for(int i=0;i<n;i++){
-            trees[i] = Long.parseLong(tmp[i]);
-            max = Math.max(max, trees[i]);
+        long start = 0;
+        long end = 0;
+        long answer = 0;
+
+        for(int i=0;i<n;i++) {
+            arr[i] = Long.parseLong(tmp[i]);
+            end =Math.max(end, arr[i]);
         }
 
-        long start = 0; // 자를 최소 높이
-        long end = max; // 자를 최대 높이
+        while(start <= end) {
+            long mid =(start+end)/2;
 
-        while(start<=end) {
-            long mid = (start + end)/2;
-
-            long get = 0;
-            for(int i=0;i<n;i++){
-                if(trees[i] - mid >=0){
-                    get += trees[i] - mid;
-                }
-            }
-            if(get >= m) {
+            if(check(mid)>=m) {
+                answer=mid;
                 start = mid+1;
-                answer = mid;
             }
-            else{
-                end = mid - 1;
+            else if(check(mid) < m) {
+                end=mid-1;
             }
         }
 
