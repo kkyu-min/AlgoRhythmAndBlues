@@ -4,50 +4,46 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 
 public class Main {
-    static int n,c;
-    static int[] houses;
-    static int answer;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         String[] tmp = br.readLine().split(" ");
 
-        n = Integer.parseInt(tmp[0]);
-        c = Integer.parseInt(tmp[1]);
+        int n = Integer.parseInt(tmp[0]);
+        int c = Integer.parseInt(tmp[1]);
 
-        houses = new int[n];
-
+        int[] arr = new int[n];
         for(int i=0;i<n;i++) {
-            houses[i] = Integer.parseInt(br.readLine());
+            arr[i] = Integer.parseInt(br.readLine());
         }
-        // 정렬 필요
-        Arrays.sort(houses);
+        Arrays.sort(arr);
 
-        int start = 1; // 최소 길이
-        int end = houses[n-1]-houses[0]; // 최대 길이
+        int start = 1;
+        int end = arr[n-1]-arr[0];
+        int answer = 0;
 
         while(start<=end) {
-            int mid = (start + end)/2;
-            int prevHouse = houses[0]; // 비교할 마지막으로 설치된 집 좌표
-            int count = 1; // 설치된 공유기 수
+            int mid = (start+end)/2;
+            int house = arr[0];
+            int cnt = 1;
 
-            for(int i=0;i<n;i++){
-                int distance = houses[i] - prevHouse;
-                if(distance >= mid){
-                    count++;
-                    prevHouse = houses[i];
+            for(int i=0;i<n;i++) {
+                int distance = arr[i] - house;
+                if(distance>=mid) {
+                    cnt++;
+                    house = arr[i];
                 }
             }
-            if(count >= c) {
-                start = mid + 1;
+
+            if(cnt >= c){
+                start=mid+1;
                 answer = mid;
             }
             else {
-                end = mid - 1;
+                end=mid-1;
             }
         }
-
         System.out.println(answer);
     }
 }
